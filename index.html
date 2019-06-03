@@ -16,9 +16,11 @@
 
     <script>
         $(document).ready(function() {
-            $("#btn").click(function() {
+            $("#btn").on('click', function (e) {
+                e.preventDefault();
+                
                 $.ajax({
-                    type: "GET",
+                    type: "POST
                     url: "https://jsonplaceholder.typicode.com/todos/" + $('#code_1').val() + $('#code_2').val(),
                     dataType: "json",
                     success: function (data) {
@@ -28,6 +30,12 @@
                         Object.keys(obj).forEach(function(key, value) {
                             $("<strong><p>" + obj[key] + "</strong></p>").appendTo("#blogs");
                         });
+                    },
+                    
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        var error = '<div role="alert" class="alert alert-danger">WebServer Error: '+thrownError+'</div>';
+                        div.append(error);
+                        div.removeClass('loading');
                     }
                     
                 });
