@@ -20,7 +20,7 @@
                 e.preventDefault();
                 
                 $.ajax({
-                    type: "POST
+                    type: "POST",
                     url: "https://jsonplaceholder.typicode.com/todos/" + $('#code_1').val() + $('#code_2').val(),
                     dataType: "json",
                     success: function (data) {
