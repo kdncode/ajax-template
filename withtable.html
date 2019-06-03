@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AJAX Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+    .loader{margin:auto;margin-left:50%;}.dot{display:inline-block;width:2.5em;height:2.5em;border-radius:50%;-webkit-transform:scale(0,0);transform:scale(0,0);-webkit-animation:superDots 2s linear infinite;animation:superDots 2s linear infinite}.dot:nth-child(1){-webkit-animation-delay:0;animation-delay:0}.dot:nth-child(2){-webkit-animation-delay:.1s;animation-delay:.1s}.dot:nth-child(3){-webkit-animation-delay:.2s;animation-delay:.2s}@-webkit-keyframes superDots{0%,100%{-webkit-transform:scale(0,0);background-color:#3f01b0}50%{-webkit-transform:scale(1,1);background-color:#fff}}@keyframes superDots{0%,100%{transform:scale(0,0);background-color:#EE1C84}50%{transform:scale(1,1);background-color:#fff}}
+    </style>
+</head>
+<body>
+    <input type="text" id="code_1" placeholder="code 1" />
+    <input type="text" id="code_2" placeholder="code 2"/>
+    <button id="btn">Run</button>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <table id="results" class="table table-bordered table-striped table-hover">
+            </table>
+        </div>
+	</div>
+
+    <script>
+        $(document).ready(function() {
+            $("#btn").on('click', function (e) {
+                $('#results').html("");
+                e.preventDefault();
+                
+                var loading = '<div class="loader"> <div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+                $("#results").empty().html(loading);
+                
+                $.ajax({
+                    type: "get",
+                    url: "https://jsonplaceholder.typicode.com/todos/" + $('#code_1').val() + $('#code_2').val(),
+                    dataType: "json",
+                    success: function (data) {
+                        $('.loader').html("");
+                        console.log(data);
+                        // var obj = JSON.parse(data);
+                        var obj = data;
+                        console.log('obj:' + obj);
+                        var a = '';
+
+                        a += '<tbody>'; 
+                        
+                        Object.keys(obj).forEach(function(key) {
+                            // $("<strong><p>" + obj[key] + "</strong></p>").appendTo("#results");
+                            
+                            a += '<tr>';
+                            a += '<td style="font-weight:bold;">' + key + '</td>';
+                            
+                            if (obj[key]) {
+                                // a += '<td>' + obj[key].replace(/\|/g, '<br>') + '</td>';
+                                a += '<td>' + obj[key] + '</td>';
+                            } else {
+                                a += '<td>NULL' + '</td>';
+                            }
+                            a += '</tr>';
+                            // console.table('Key : ' + key + ', Value : ' + obj[key])
+
+                        });
+                        
+                        a += '</tbody>';
+                        $("#results").append(a);
+                        
+                    },
+                    
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        var error = '<div role="alert" class="alert alert-danger">WebServer Error: '+thrownError+'</div>';
+                        console.log(error);
+                    }
+                    
+                });
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
