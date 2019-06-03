@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AJAX Template</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <input type="text" id="code_1" placeholder="code 1" />
+    <input type="text" id="code_2" placeholder="code 2"/>
+    <button id="btn">Run</button>
+
+    <div id="blogs"></div>
+
+    <script>
+        $(document).ready(function() {
+            $("#btn").click(function() {
+                $.ajax({
+                    type: "GET",
+                    url: "https://jsonplaceholder.typicode.com/todos/" + $('#code_1').val() + $('#code_2').val(),
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        // var obj = JSON.parse(data);
+                        var obj = data;
+                        Object.keys(obj).forEach(function(key, value) {
+                            $("<strong><p>" + obj[key] + "</strong></p>").appendTo("#blogs");
+                        });
+                    }
+                    
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
